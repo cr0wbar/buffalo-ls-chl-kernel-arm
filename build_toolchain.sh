@@ -1,13 +1,13 @@
 #!/usr/bin/bash
 
-BINUTILS_VER=2.31.1
-GCC_VER=8.2.0
-KERNEL_VER=4.19.13
-GLIBC_VER=2.28
+BINUTILS_VER=2.39
+GCC_VER=12.2.0
+KERNEL_VER=5.15.65
+GLIBC_VER=2.36
 
-TARGET_ARCH=arm-linux-gnueabi
-PREFIX=/opt/cross
-CORES=2
+TARGET_ARCH=arm-linux-gnueabihf
+PREFIX=/opt/cross2
+CORES=12
 
 _TERM="---------------------------"
 echo $_TERM
@@ -82,7 +82,7 @@ check
 mkdir build-gcc
 cd build-gcc
 echo "Preparing GCC STAGE1"
-../gcc-$GCC_VER//configure --prefix=$PREFIX --target=$TARGET_ARCH --disable-multilib --enable-languages=c,c++ --disable-threads  2> $LOGS_DIR/build.log > /dev/null
+../gcc-$GCC_VER//configure --prefix=$PREFIX --target=$TARGET_ARCH --disable-multilib --enable-languages=c,c++  2> $LOGS_DIR/build.log > /dev/null
 check
 echo "Building GCC stage 1"
 make -j$CORES all-gcc  2> $LOGS_DIR/build.log > /dev/null
@@ -96,7 +96,7 @@ echo $_TERM
 #Kernel headers
 if [ ! -f linux-$KERNEL_VER.tar ]; then
     echo "Downloading kernel tarball"
-    curl -O https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VER.tar.xz
+    curl -O https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$KERNEL_VER.tar.xz
     check
     unxz linux-$KERNEL_VER.tar.xz  2> $LOGS_DIR/build.log > /dev/null
     check
